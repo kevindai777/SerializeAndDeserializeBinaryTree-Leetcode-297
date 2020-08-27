@@ -68,3 +68,43 @@ function deserialize(data) {
     
     return node
 }
+
+
+//O(n) solution where we use a string instead of an array
+
+function serialize(root) {
+    let arr = []
+
+    //The preorder traversal to collect nodes
+    function dfs(node) {
+        if (node == null) {
+            arr.push(node)
+            return
+        }
+        arr.push(node.val)
+        dfs(node.left)
+        dfs(node.right)
+    }
+    dfs(root)
+
+    return arr.join(' ')
+}
+
+function deserialize(data) {
+    let arr = data.split(' ')
+    
+    function buildTree(arr) {
+        let root = arr.shift()
+        
+        if (root == 'null') {
+            return null
+        }
+        
+        let node = new TreeNode(root)
+        node.left = buildTree(arr)
+        node.right = buildTree(arr)
+        
+        return node
+    }
+    return buildTree(arr)
+}
